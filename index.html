@@ -1,14 +1,112 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>속마음 알아보기 테스트</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+    <div class="app-container">
+        <!-- Part 1: 시작 화면 -->
+        <section id="start-page" class="page active">
+            <h1 class="title">속마음 알아보기 테스트</h1>
+            <div id="start-image-placeholder" class="image-placeholder"></div>
+            <button id="start-btn" class="btn">시작하기</button>
+            <p id="visitor-count">현재까지 0명이 이 테스트를 이용했어요!</p>
+        </section>
+
+        <!-- Part 2: 테스트 화면 -->
+        <section id="test-page" class="page">
+            <div class="test-header">
+                <button id="prev-btn" class="btn nav-btn">이전</button>
+                <button id="next-btn" class="btn nav-btn">다음</button>
+            </div>
+            <h2 id="question-title"></h2>
+            <div id="question-image-placeholder" class="image-placeholder small"></div>
+            <div class="card-container">
+                <div id="choice-card" class="choice-card">
+                    <div class="card-face card-face-front">
+                        <p class="card-title">[겉으론..]</p>
+                        <div id="outer-choices" class="choices"></div>
+                    </div>
+                    <div class="card-face card-face-back">
+                        <p class="card-title">[속으론..]</p>
+                        <div id="inner-choices" class="choices"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: 로딩 화면 -->
+        <section id="loading-page" class="page">
+            <div class="loader"></div>
+            <p>당신의 답변을 분석 중입니다.</p>
+            <button id="edit-answers-btn" class="btn">이전으로 돌아가 답변 수정하기</button>
+        </section>
+
+        <!-- Part 4: 결과 화면 -->
+        <section id="result-page" class="page">
+            <div id="result-capture">
+                <p id="result-summary-text"></p>
+                <div id="result-card">
+                    <div id="result-outer-type"></div>
+                    <div id="result-inner-type"></div>
+                </div>
+                <p id="result-persona-name"></p>
+                <p id="result-persona-desc"></p>
+            </div>
+            <button id="share-btn" class="btn">결과 공유하고 인간관계 팁 받기</button>
+            <div id="share-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <p>공유하기</p>
+                    <button id="kakao-share-btn">카카오톡 공유</button>
+                    <button id="twitter-share-btn">X(트위터) 공유</button>
+                    <button id="facebook-share-btn">페이스북 공유</button>
+                    <button id="copy-link-btn">링크 복사</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 5: 팁 & 통계 화면 -->
+        <section id="tips-page" class="page">
+            <h2 id="tips-title"></h2>
+            <div class="tips-content">
+                <h3>📊 나와 비슷한 타입은?</h3>
+                <div class="chart-container">
+                    <div>
+                        <canvas id="outer-type-chart"></canvas>
+                        <p>겉 성향이 같은 사람</p>
+                    </div>
+                    <div>
+                        <canvas id="inner-type-chart"></canvas>
+                        <p>속 성향이 같은 사람</p>
+                    </div>
+                    <div>
+                        <canvas id="full-type-chart"></canvas>
+                        <p>겉과 속 모두 같은 사람</p>
+                    </div>
+                </div>
+
+                <h3>💡 인간관계 팁</h3>
+                <div id="tips-by-situation"></div>
+            </div>
+             <button id="restart-btn" class="btn">테스트 다시하기</button>
+        </section>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
